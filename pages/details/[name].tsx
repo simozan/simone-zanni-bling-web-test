@@ -21,6 +21,7 @@ interface Pokemon {
     weight: number;
     abilities: { ability: { name: string } }[];
     stats: { stat: { name: string }; base_stat: number }[];
+    types: { type: { name: string } }[];
 }
 
 export default function Details() {
@@ -32,6 +33,7 @@ export default function Details() {
         if (name) {
             axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`)
                 .then((response) => {
+                    console.log(response.data);
                     setPokemon(response.data)
                 })
                 .catch((error) => {
@@ -53,6 +55,7 @@ export default function Details() {
     <li className='details-item'> Weight: {pokemon.weight}</li>
     <li className='details-item'> Abilities: {pokemon.abilities.map((a) => a.ability.name).join(', ')}</li>
     <li className='details-item'> Stats: {pokemon.stats.map((s) => `${s.stat.name}: ${s.base_stat}`).join(', ')}</li>
+    <li className='details-item'><strong>Types:</strong> {pokemon.types.map((t) => t.type.name).join(', ')}</li>
 </ul>
 </div>
     );

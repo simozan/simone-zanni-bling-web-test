@@ -10,10 +10,18 @@ interface Pokemon {
     url: string;
 }
 
+interface PokemonType {
+    name: string;
+    url: string;
+}
+
 export default function Home() {
     const [pokemonList, setPokemonList] = useState<Pokemon[]>([])
     const [nextUrl, setNextUrl] = useState<string>('https://pokeapi.co/api/v2/pokemon/')
     const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [types, setTypes] = useState<PokemonType[]>([])
+    const [selectedType, setSelectedType] = useState<string>('')
+
 
     const getPokemon = async (url: string) => {
         setIsLoading(true);
@@ -32,22 +40,68 @@ export default function Home() {
                 setIsLoading(false)
             })
     }
+
+    const getTypes = async () => {
+        axios.get('https://pokeapi.co/api/v2/type')
+            .then((response) => {
+                console.log(response.data.results);
+
+                setTypes(response.data.results)
+            })
+            .catch((error) => {
+                console.error('error fetching ponémon types: ', error);
+            })
+    }
+
     useEffect(() => {
-        getPokemon(nextUrl)
-    }, [])
+        getPokemon(nextUrl);
+        getTypes();
+    }, []);
+
+    const handleTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const selected = event.target.value;
+        setSelectedType(selected);
+        if (selected) {
+            setIsLoading(true);
+            axios.get(`https://pokeapi.co/api/v2/type/${selected}`)
+                .then((response) => {
+                    const pokemonData = response.data.pokemon.map((p: any) => p.pokemon);
+                    setPokemonList(pokemonData);
+                    setNextUrl('');
+                })
+                .catch((error) => {
+                    console.error('error fetching ponémon by type: ', error);
+                })
+                .finally(() => {
+                    setIsLoading(false)
+                })
+        } else {
+            setPokemonList([]);
+            getPokemon('https://pokeapi.co/api/v2/pokemon/')
+        }
+    }
+
     return (<main className="main">
-        <h1 className="title" >Pokemon</h1>
+        <h1 className="title" >Pokémon</h1>
+        <select value={selectedType} onChange={handleTypeChange} className='type-select'>
+            <option value="">All types</option>
+            {types.map((type: PokemonType) => (
+                <option key={type.name} value={type.name}>
+                    {type.name.charAt(0).toUpperCase() + type.name.slice(1)}
+                </option>
+            ))}
+        </select>
         <ul className="pokemon-list">
-        {pokemonList.map((eachPokemon: Pokemon) => (
-          <li key={eachPokemon.name} className="pokemon-item">
-            <a href={`/details/${eachPokemon.name}`} className="pokemon-link">{eachPokemon.name}</a>
-          </li>
-        ))}
+            {pokemonList.map((eachPokemon: Pokemon) => (
+                <li key={eachPokemon.name} className="pokemon-item">
+                    <a href={`/details/${eachPokemon.name}`} className="pokemon-link">{eachPokemon.name.charAt(0).toUpperCase() + eachPokemon.name.slice(1)}</a>
+                </li>
+            ))}
         </ul>
-        {nextUrl && (
-            <button onClick={()=> getPokemon(nextUrl)} disabled={isLoading} className='load-button'>
-                {isLoading ? `Loading...`: `Load more`}
+        {nextUrl && !selectedType && (
+            <button onClick={() => getPokemon(nextUrl)} disabled={isLoading} className='load-button'>
+                {isLoading ? `Loading...` : `Load more`}
             </button>
         )}
-        </main>)
+    </main>)
 }
