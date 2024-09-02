@@ -1,4 +1,5 @@
 "use client"
+import './details.css'
 
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -40,16 +41,18 @@ export default function Details() {
     }, [name]);
     if (!pokemon) return <div>Loading...</div>
     return (
-<div>
-    <h1>{pokemon.name}</h1>
-    <img src={pokemon.sprites.other['official-artwork'].front_default} alt={pokemon.name}/>
-    <img src={pokemon.sprites.other['official-artwork'].front_shiny} alt={`${pokemon.name} shiny`}/>
-<ul>
-    <li> ID: {pokemon.id}</li>
-    <li> Height: {pokemon.height}</li>
-    <li> Weight: {pokemon.weight}</li>
-    <li> Abilities: {pokemon.abilities.map((a) => a.ability.name).join(', ')}</li>
-    <li> Stats: {pokemon.stats.map((s) => `${s.stat.name}: ${s.base_stat}`).join(', ')}</li>
+<div className='details'>
+    <h1 className='details-title'>{pokemon.name}</h1>
+    <div className='details-images'>
+    <img src={pokemon.sprites.other['official-artwork'].front_default} alt={pokemon.name} className='details-image'/>
+    <img src={pokemon.sprites.other['official-artwork'].front_shiny} alt={`${pokemon.name} shiny`} className='details-image'/>
+    </div>
+<ul className='details-list'>
+    <li className='details-item'> ID: {pokemon.id}</li>
+    <li className='details-item'> Height: {pokemon.height}</li>
+    <li className='details-item'> Weight: {pokemon.weight}</li>
+    <li className='details-item'> Abilities: {pokemon.abilities.map((a) => a.ability.name).join(', ')}</li>
+    <li className='details-item'> Stats: {pokemon.stats.map((s) => `${s.stat.name}: ${s.base_stat}`).join(', ')}</li>
 </ul>
 </div>
     );
