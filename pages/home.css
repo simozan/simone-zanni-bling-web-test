@@ -21,8 +21,21 @@
     font-size: 60px;
 }
 
+.type-select {
+    margin-bottom: 20px;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ffcb05;
+    border-radius: 5px;
+    background-color: #2a75bb;
+    color: white;
+    outline: none;
+    width: 200px;
+    text-align: center;
+}
 .pokemon-list {
     width: 50vw;
+    max-width: 600px;
     background-color: #2a75bb;
     border: #ffcb05 3px solid;
     list-style: none;
@@ -32,13 +45,22 @@
 .pokemon-item {
     margin: 10px;
     flex: 1 1 150px;
+    text-align: center;
 }
 
 .pokemon-link {
     color: #ffcb05;
     text-decoration: none;
     font-weight: bold;
+    font-weight: bold;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
 }
+.pokemon-link:hover {
+    background-color: #ffcb05;
+    color: #2a75bb;}
 
 .load-button {
     background-color: #ffcb05;
