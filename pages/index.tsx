@@ -3,6 +3,8 @@ import './home.css';
 
 import { useState } from "react"
 import { useEffect } from "react"
+import { useRef } from 'react';
+import { useCallback } from 'react';
 import axios from "axios"
 import { useRouter } from 'next/navigation';
 interface Pokemon {
@@ -23,6 +25,7 @@ export default function Home() {
     const [selectedType, setSelectedType] = useState<string>('')
     const [searchQuery, setSearchQuery] = useState<string>('')
     const router = useRouter()
+    const loadMoreRef = useRef<HTMLDivElement | null>(null)
 
 
     const getPokemon = async (url: string) => {
@@ -91,6 +94,33 @@ export default function Home() {
         }
     }
 
+
+const loadMoreCallback= useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+        const target = entries[0];
+        if (target.isIntersecting && nextUrl && !isLoading){
+            getPokemon(nextUrl)
+        }
+    },
+    [nextUrl, isLoading]
+)
+
+useEffect(()=>{
+    const observer = new IntersectionObserver (loadMoreCallback, {
+        root: null,
+        rootMargin: '20px',
+        threshold: 1.0
+    });
+    if (loadMoreRef.current) {
+        observer.observe(loadMoreRef.current);
+    }
+    return ()=>{
+        if (loadMoreRef.current){
+            observer.unobserve(loadMoreRef.current)
+        }
+    }
+}, [loadMoreCallback]);
+
     return (<main className="main">
         <h1 className="title" >Pokémon</h1>
         <form onSubmit={handleSearchSubmit} className='search-bar'>
@@ -118,10 +148,11 @@ export default function Home() {
                 </li>
             ))}
         </ul>
-        {nextUrl && !selectedType && (
+        {/* {nextUrl && !selectedType && (
             <button onClick={() => getPokemon(nextUrl)} disabled={isLoading} className='load-button'>
                 {isLoading ? `Loading...` : `Load more`}
             </button>
-        )}
+        )} */}
+        <div ref={loadMoreRef} style={{height: '20px'}}></div>
     </main>)
 }
