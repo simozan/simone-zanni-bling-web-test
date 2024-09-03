@@ -2,56 +2,108 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-  }
 
-.details{
-    background-color: #2a75bb;
+}
+
+.main {
+    text-align: center;
+    background: linear-gradient(to bottom, rgb(12, 33, 79), rgb(0, 0, 0));
     color: white;
     padding: 20px;
-    text-align: center;
     font-family: Arial, Helvetica, sans-serif;
-}
-
-.details-title{
-    color: #ffcb05;;
-}
-
-.details-images{
+    align-items: center;
     display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.card {
+    background-color: #2a75bb;
+    color: white;
+    padding: 40px ;
+    text-align: left;
+    border: 3px solid #ffcb05;
+    border-radius: 10px;
+    max-width: 800px;
+    width: 90%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 0 auto;
+
+}
+
+.details-title {
+    color: #ffcb05;
+    margin-bottom: 20px;
+    font-size: 48px;
+    text-align: center;
+}
+
+.details-container {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
     flex-wrap: wrap;
     justify-content: center;
+}
+
+.details-images {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 20px;
 }
 
-.details-image{
-    width: 200px;
+.details-image {
+    width: 180px;
     height: auto;
     margin: 10px;
-    border: 3px solid #ffcb05;
 }
 
-.details-list{
+.details-list {
     list-style: none;
-    padding: 0;
+    padding: 10px;
     margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+    max-width: 400px;
 }
 
-.details-item{
-    margin: 10px 0;
+.details-item {
+    margin: 5px 0;
+    font-size: 16px;
+    line-height: 1.5;
+
 }
 
-@media (max-width: 600px){
-    .details-images{
+.back-button {
+    background-color: #ffcb05;
+    color: #2a75bb;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.back-button:hover {
+    background-color: #f7b500;
+}
+
+@media (max-width: 600px) {
+    .details-images {
         flex-direction: column;
     }
 
-    .details-image{
+    .details-image {
         width: 100%;
         max-width: 300px;
         margin: 0 auto;
     }
 
-    .details-list{
+    .details-list {
         padding: 0 10px;
     }
 }

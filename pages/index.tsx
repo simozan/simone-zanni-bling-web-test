@@ -4,7 +4,7 @@ import './home.css';
 import { useState } from "react"
 import { useEffect } from "react"
 import axios from "axios"
-
+import { useRouter } from 'next/navigation';
 interface Pokemon {
     name: string;
     url: string;
@@ -21,6 +21,8 @@ export default function Home() {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [types, setTypes] = useState<PokemonType[]>([])
     const [selectedType, setSelectedType] = useState<string>('')
+    const [searchQuery, setSearchQuery] = useState<string>('')
+    const router = useRouter()
 
 
     const getPokemon = async (url: string) => {
@@ -81,8 +83,26 @@ export default function Home() {
         }
     }
 
+
+    const handleSearchSubmit = (event: React.FormEvent) => {
+        event.preventDefault();
+        if (searchQuery.trim()) {
+            router.push(`/details/${searchQuery.toLowerCase()}`)
+        }
+    }
+
     return (<main className="main">
         <h1 className="title" >Pokémon</h1>
+        <form onSubmit={handleSearchSubmit} className='search-bar'>
+            <input
+                type="text"
+                placeholder='Search Pokémon...'
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className='search-input'
+            />
+            <button type="submit" className='search-button'>Search</button>
+        </form>
         <select value={selectedType} onChange={handleTypeChange} className='type-select'>
             <option value="">All types</option>
             {types.map((type: PokemonType) => (
