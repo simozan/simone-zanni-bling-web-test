@@ -19,7 +19,7 @@ This project is a web application built with Next.js and TypeScript, which allow
 
 1. **Clone the repository**:
    ```bash
-   git clone <repository-url>
+   git clone (https://github.com/simozan/simone-zanni-bling-web-test.git)
    ```
 2. **Navigate to the project directory**:
    ```bash
